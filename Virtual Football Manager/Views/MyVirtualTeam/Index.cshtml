@@ -1,0 +1,91 @@
+﻿@model IEnumerable<Virtual_Football_Manager.Models.ModelViewVirtualTeamTable>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+    <br>
+    @Html.ActionLink("View how you earn points", "RulesPoints")
+</p>
+<table class="table">
+    <tr>
+        <th>#</th>
+     
+        <th>Points</th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.virtualTeam.teamName)
+        </th>
+        <th>
+            User Email
+        </th>
+        <th>Actions</th>
+    </tr>
+
+    @{ 
+        var rank = 0;
+    }
+    
+@foreach (var item in Model)
+{
+    rank=rank+1;
+
+    var row = "";
+
+
+
+    if (Request.IsAuthenticated)
+    {
+        if (User.Identity.GetUserName() == item.virtualTeam.user.Email)
+        {
+            row = "#baecff";
+        }
+        else {
+            row = "white";
+        }
+    }
+    else {
+        row = "white";
+    }
+
+
+
+  <tr style="background-color:@row">
+     
+       <td>
+           @rank
+       </td>
+
+      <td>
+          @Html.ActionLink("" + @item.points, "EarnedPoints", "MyVirtualTeam", new { userId = item.virtualTeam.id }, new { })
+      </td>
+
+      <td>
+          @Html.ActionLink("" + item.virtualTeam.teamName, "Details", "MyVirtualTeam", new { id = item.virtualTeam.id }, new { })
+      </td>
+
+      <td>
+            @Html.DisplayFor(modelItem => item.virtualTeam.user.Email)
+       </td>
+        <td>
+            @using Microsoft.AspNet.Identity
+            @if (Request.IsAuthenticated){
+                if (User.Identity.GetUserName()==item.virtualTeam.user.Email){
+                    @Html.ActionLink("Edit", "Edit", new { id = item.virtualTeam.id })
+                    <span style="margin-right:10px"></span>
+                }
+                if (User.Identity.GetUserName() == item.virtualTeam.user.Email)
+                {
+                    <span style="margin-left:10px"></span>
+                    /*  @Html.ActionLink("Delete", "Delete", new { id = item.id }) */
+                }
+            }
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,139 @@
+﻿@model Virtual_Football_Manager.Models.Match
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Match Stats</h2>
+<h4>Match from @Html.ActionLink("" + @Model.fixture.name, "Details", "Fixture", 
+              new { id = @Model.fixture.id }, new { })</h4>
+ 
+<hr />
+     
+<h3 style="text-align:center">
+
+    @{
+        int homeTeamId = Model.homeTeamId;
+        int awayTeamId = Model.awayTeamId;
+
+
+        <!-- na poz 0 e homeTeam-->
+        if (homeTeamId == Model.teams.ElementAt(0).id)
+        {
+            <span>
+                @Html.ActionLink("" + @Model.teams.ElementAt(0).name, "Details", "Team", 
+               new { id = @Model.teams.ElementAt(0).id }, new { })
+           </span>
+            <span class="label label-default">
+                @Html.DisplayFor(model => model.homeScore)
+                :
+                @Html.DisplayFor(model => model.awayScore)
+            </span>
+            <span>
+                @Html.ActionLink("" + @Model.teams.ElementAt(1).name, "Details", "Team",
+               new { id = @Model.teams.ElementAt(1).id }, new {@style = "margin-left:5px;" })
+            </span>
+        }
+        else { <!--na poz 1 e homeTeam -->
+
+            <span>
+                @Html.ActionLink("" + @Model.teams.ElementAt(1).name, "Details", "Team",
+               new { id = @Model.teams.ElementAt(1).id }, new {   })
+            </span>
+            <span class="label label-default">
+                @Html.DisplayFor(model => model.homeScore)
+                :
+                @Html.DisplayFor(model => model.awayScore)
+            </span>
+            <span>
+                @Html.ActionLink("" + @Model.teams.ElementAt(0).name, "Details", "Team",
+               new { id = @Model.teams.ElementAt(0).id }, new { @style = "margin-left:5px;" })
+            </span>
+        }
+    }
+
+   
+
+
+
+    
+</h3>
+
+ <table class="table table-striped">
+     <tr>
+         <th>
+             Scorer:
+         </th>
+         <th>
+             Assisted By:
+         </th>
+         <th>
+             Minute:
+         </th>
+     </tr>
+             @{
+                 for (int i = 0; i < Model.goals.Count; i++)
+                 {
+                   <tr>
+                     <td> 
+                         @Html.ActionLink("" + @Model.goals.ElementAt(i).footballPlayers.ElementAt(0).name,
+                        "Details", "FootballPlayer", new { id = @Model.goals.ElementAt(i).footballPlayers.ElementAt(0).id }, new { })
+                       </td>
+                     <td> 
+                         @Html.ActionLink("" + @Model.goals.ElementAt(i).footballPlayers.ElementAt(1).name,
+                        "Details", "FootballPlayer", new { id = @Model.goals.ElementAt(i).footballPlayers.ElementAt(1).id }, new { })
+                       </td>
+                     <td>@Model.goals.ElementAt(i).minuteScored</td>
+                   </tr>
+                 }
+             }
+</table>
+ 
+  
+   
+
+<table class="table table-bordered table-striped" style="text-align:center;">
+    <tr class="row">
+        <td class="col-md-5">@Html.DisplayFor(model => model.matchStats.homeBallPosession)</td>
+        <td class="col-md-2">@Html.DisplayNameFor(model => model.matchStats.homeBallPosession)</td>
+        <td class="col-md-5">@Html.DisplayFor(model => model.matchStats.awayBallPosession)</td>
+    </tr>
+
+
+    <tr class="row">
+        <td class="col-md-5">@Html.DisplayFor(model => model.matchStats.homeTotalShoots)</td>
+        <td class="col-md-2">@Html.DisplayNameFor(model => model.matchStats.homeTotalShoots)</td>
+        <td class="col-md-5">@Html.DisplayFor(model => model.matchStats.awayTotalShoots)</td>
+    </tr>
+    <tr class="row">
+        <td class="col-md-5"> @Html.DisplayFor(model => model.matchStats.homePasses)</td>
+        <td class="col-md-2"> @Html.DisplayNameFor(model => model.matchStats.homePasses)</td>
+        <td class="col-md-5"> @Html.DisplayFor(model => model.matchStats.awayPasses)</td>
+    </tr>
+    <tr class="row">
+        <td class="col-md-5">@Html.DisplayFor(model => model.matchStats.homeFouls) </td>
+        <td class="col-md-2"> @Html.DisplayNameFor(model => model.matchStats.homeFouls) </td>
+        <td class="col-md-5">@Html.DisplayFor(model => model.matchStats.awayFouls) </td>
+    </tr>
+    <tr class="row">
+        <td class="col-md-5"> @Html.DisplayFor(model => model.matchStats.homeCorners)</td>
+        <td class="col-md-2"> @Html.DisplayNameFor(model => model.matchStats.homeCorners)</td>
+        <td class="col-md-5"> @Html.DisplayFor(model => model.matchStats.awayCorners)</td>
+    </tr>
+    <tr class="row">
+        <td class="col-md-5"> @Html.DisplayFor(model => model.matchStats.homeYellowCards)</td>
+        <td class="col-md-2">@Html.DisplayNameFor(model => model.matchStats.homeYellowCards) </td>
+        <td class="col-md-5"> @Html.DisplayFor(model => model.matchStats.awayYellowCards)</td>
+    </tr>
+    <tr class="row">
+        <td class="col-md-5"> @Html.DisplayFor(model => model.matchStats.homeRedCards)</td>
+        <td class="col-md-2"> @Html.DisplayNameFor(model => model.matchStats.homeRedCards)</td>
+        <td class="col-md-5">@Html.DisplayFor(model => model.matchStats.awayRedCards) </td>
+    </tr>
+
+</table>
+
+   
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

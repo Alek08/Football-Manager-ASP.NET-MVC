@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+     
+    @if (User.IsInRole(Virtual_Football_Manager.Models.RoleNames.ADMIN))
+    {
+        <h2>Welcome admin @User.Identity.Name</h2>
+    }
+    else if (User.IsInRole(Virtual_Football_Manager.Models.RoleNames.USER))
+    {
+        <h2>Welcome @User.Identity.Name</h2>
+    }
+    else
+    {
+        <h2>Join us by registering!</h2>
+    }
+    
+    
+</div>
+
+ 

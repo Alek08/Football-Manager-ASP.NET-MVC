@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Virtual_Football_Manager.Models.Match>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>All Matches</h2>
+
+ 
+
+<style>
+    .changeColorOnMouseHover:hover td {background:#99c0ff}
+</style>
+<table class="table">
+ 
+@{
+
+    var currFixture = "";
+    foreach (var item in Model)
+    {
+
+        if (currFixture != item.fixture.name)
+        {
+            currFixture = item.fixture.name;
+        <tr>
+            <td>  
+                @Html.ActionLink("" + item.fixture.name, "Details", "Fixture", new { id = item.fixture.id }, new { })
+            </td>
+        </tr>
+        }
+    <tr onclick="location.href = '@(Url.Action("Details", "Match", new { id = item.id }))'"
+                style="cursor: pointer;"
+        class="changeColorOnMouseHover"
+        >
+        @{ 
+            int homeTeamId = item.homeTeamId;
+            int awayTeamId = item.awayTeamId;
+
+            <!-- na poz 0 e hometeam -->
+            if (homeTeamId == item.teams.ElementAt(0).id)
+            {
+                <td>
+                    <span>@Html.DisplayFor(modelItem => item.teams.ElementAt(0).name)</span>
+                 
+                    <span class="label label-success">
+                        @Html.DisplayFor(modelItem => item.homeScore)
+                        :
+                        @Html.DisplayFor(modelItem => item.awayScore)
+                    </span>
+
+                
+                    <span style="margin-left:5px;">@Html.DisplayFor(modelItem => item.teams.ElementAt(1).name)</span>
+                </td>
+            }
+            else { <!-- na poz 1 e homeTeam -->
+                <td>
+                    <span>@Html.DisplayFor(modelItem => item.teams.ElementAt(1).name)</span>
+                
+                    <span class="label label-success">
+                        @Html.DisplayFor(modelItem => item.homeScore)
+                        :
+                        @Html.DisplayFor(modelItem => item.awayScore)
+                    </span>
+
+               
+                    <span style="margin-left:5px;">@Html.DisplayFor(modelItem => item.teams.ElementAt(0).name)</span>
+                </td>
+            }
+
+        }
+      
+
+         
+
+       
+    </tr>
+        }
+
+    }
+</table>

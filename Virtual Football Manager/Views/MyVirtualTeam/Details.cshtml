@@ -1,0 +1,57 @@
+﻿@model Virtual_Football_Manager.Models.MyVirtualTeam
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<style>
+    .changeColorOnMouseHover:hover td {
+        background: #99c0ff;
+    }
+</style>
+
+<h2>Details</h2>
+
+<div>
+    <h4>MyVirtualTeam</h4>
+    <hr />
+    <div>
+        <p>
+            <span style="font-weight: bold;"> User Email:</span>
+            <span>@Html.DisplayFor(model => model.user.Email) </span>
+        </p>
+        <p>
+            <span style="font-weight: bold;">@Html.DisplayNameFor(model => model.teamName):</span>
+            <span>@Html.DisplayFor(model => model.teamName) </span>
+        </p>
+    </div>
+</div>
+<table class="table table-bordered">
+<tr>
+    <th>
+        Players In Virtual Team @Model.teamName
+    </th>
+</tr>
+@{
+    for (int i = 0; i < Model.footballPlayers.Count; i++)
+    {
+        <tr onclick="location.href = '@(Url.Action("Details", "FootballPlayer", new { id = Model.footballPlayers.ElementAt(i).id }))'"
+            style="cursor: pointer;"
+            class="changeColorOnMouseHover">
+            <td>
+                @Model.footballPlayers.ElementAt(i).name
+            </td>
+        </tr>
+    }
+
+}
+
+
+
+
+</table>
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

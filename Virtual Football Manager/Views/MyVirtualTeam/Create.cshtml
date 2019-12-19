@@ -1,0 +1,276 @@
+﻿@model Virtual_Football_Manager.Models.ModelAddFootballPlayersToVirtualTeam
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>MyVirtualTeam</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    
+
+  
+        <div class="form-group">
+            @Html.LabelFor(model => model.myVirtualTeamName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @if (Model.virtualTeam != null)
+                {
+                    @Html.EditorFor(model => model.myVirtualTeamName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                }
+                else {
+                    @Html.EditorFor(model => model.myVirtualTeamName, new { htmlAttributes = new { @class = "form-control" } })
+                }
+                @Html.ValidationMessageFor(model => model.myVirtualTeamName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+         
+   
+
+
+ 
+      @if (Model.virtualTeam != null)
+      {
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" disabled="disabled" />
+                </div>
+            </div>
+      }
+      else {
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default"   />
+                </div>
+            </div>
+      }
+       
+
+
+
+        <div class="row">
+
+            <div class="col-sm-6" class="col-md-6" class="col-lg-6">
+
+ 
+          
+
+                @{
+
+                    var numOfPlayersInMyVirtualTeam = 0;
+                 }
+                <table class="table table-striped">
+                    <tr>
+                        <th>#</th>
+                        <th>
+                            Player
+                        </th>
+                        <th>
+                            Action
+                        </th>
+                    </tr>
+
+                    @if (Model.virtualTeam != null)
+                    {
+                        foreach (var item in Model.virtualTeam.footballPlayers)
+                        {
+                            numOfPlayersInMyVirtualTeam = numOfPlayersInMyVirtualTeam + 1;
+                            <tr>
+                                <td>@numOfPlayersInMyVirtualTeam</td>
+                                <td>
+                                    @Html.ActionLink("" + item.name, "Details", "FootballPlayer", new { id = item.id }, new { })
+                                </td>
+
+                                <td>
+
+                                    @{
+                                        if (Model.virtualTeam != null){
+                                             <!-- uste ne e napraven ovoj virtualTeam---->
+                                            if (Model.virtualTeam.lockedTeam)
+                                            {
+                                            }
+                                            else {
+                                                @Html.ActionLink(" ", "RemovePlayerFromVirtualTeam", new { playerId = item.id },
+                                                new { @class = "glyphicon glyphicon-remove", @style = "font-size:25px;margin-right:4px;" })
+                                            }
+                                        }
+                                        else {
+                                        }
+                                    }
+                                </td>
+                            </tr>
+                         }
+                  }
+
+                </table>
+
+                @{
+                    if (Model.virtualTeam != null)
+                    {
+                         <!-- uste ne e napraven ovoj virtualTeam---->
+                        if (Model.virtualTeam.lockedTeam)
+                        {
+                            <span style="font-size:25px;margin-right:4px;">Locked</span>
+                        }
+                        else {
+                            @Html.ActionLink("Lock ", "LockVirtualTeam",
+                              new { },
+                              new
+                              {
+
+                                  @style = "font-size:25px;margin-right:4px;"
+                              })
+                        }
+                    }
+                    else {
+                    }
+                }
+            </div>
+
+            <div class="col-sm-6" class="col-md-6" class="col-lg-6">
+
+                @* 
+                <table class="table">
+                    <tr>
+                        <th>
+                            Player
+                        </th>
+                        <th>
+                            Team
+                        </th>
+                        <th>
+                            Action
+                        </th>
+                    </tr>
+
+                    @{ 
+                        var bgPlayerAddedToMyVirtualTeam = "";
+                        
+                    }
+
+                    @foreach (var item in Model.footballPlayers)
+                    {
+                        var included = false;
+
+
+                        if (Model.virtualTeam != null){
+                            foreach (var item2 in Model.virtualTeam.footballPlayers)
+                            {
+                                if (item2.id == item.id)
+                                {
+                                    included = true;
+                                }
+                            }
+                        }
+                        
+                        if (included)
+                        {
+                            bgPlayerAddedToMyVirtualTeam = "#273d49";
+                        }
+                        else {
+                            bgPlayerAddedToMyVirtualTeam = "white";
+                        }
+
+
+                        <tr style="background-color:@bgPlayerAddedToMyVirtualTeam">
+                            <td>
+                                @Html.ActionLink("" + item.name, "Details", "FootballPlayer", new { id = item.id }, new { })
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.team.name)
+                            </td>
+                            <td>
+                                @Html.ActionLink(" ", "AddPlayerToVirtualTeam",
+                                        new { playerId = item.id },
+                                        new
+                                        {
+                                            @class = "glyphicon glyphicon-plus",
+                                            @style = "font-size:25px;margin-right:4px;"
+                                        })
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+                    *@
+ 
+
+                <table id="movieTable" class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Player
+                            </th>
+                            <th>
+                                Team
+                            </th>
+                            <th>
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+
+                <img id="gif_loader" src="~/gif/gif_loader.gif">
+
+                @section scripts{
+                    <script>
+                        $(document).ready(function () {
+                            $(document).ajaxStart(function () {
+                                $("#gif_loader").show();
+                            });
+
+                            $(document).ajaxStop(function () {
+                                $("#gif_loader").hide();
+                            });
+                            $("#movieTable").DataTable({
+                                ajax: {
+                                    type: "GET",
+                                    url: "/api/FootballPlayersAPI",
+                                    dataSrc: "",
+                                    datatype: "json"
+                                },
+                                columns: [
+                                    {
+                                        data: "playerName",
+                                        render: function (data, type, model) {
+                                            return "<a href='/FootballPlayer/Details/" + model.playerId + "'>" + model.playerName + "</a>";
+                                        }
+                                    },
+                                    {
+                                        data: "teamName",
+                                        render: function (data, type, model) {
+                                            return "<a href='/Team/Details/"+model.teamId+"'>" + model.teamName + "</a>";
+                                        }
+                                    },
+                                    {
+                                        data: "Actions",
+                                        render: function (data, type, model) {
+                                            str = "";
+                                            str += "<a style='font-size:25px;' class='glyphicon glyphicon-plus' " +
+                                                " href='/MyVirtualTeam/AddPlayerToVirtualTeam?playerId=" + model.playerId + "'></a>";
+                                            return str;
+                                        }
+                                    }
+                                ]
+                            });
+                        });
+                        </script>
+}
+
+
+            </div>
+        </div>
+
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

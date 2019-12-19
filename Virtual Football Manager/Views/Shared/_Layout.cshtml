@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+
+ 
+
+@{
+    var navBarBgColor = "#8c0012";
+
+    if (User.IsInRole(Virtual_Football_Manager.Models.RoleNames.ADMIN))
+    {
+        navBarBgColor = "#003387";
+    }
+    else if (User.IsInRole(Virtual_Football_Manager.Models.RoleNames.USER))
+    {
+        navBarBgColor = "#006575";
+    }
+    else {
+        navBarBgColor = "#222222";
+    }
+    
+        }
+        <body>
+                <div class="navbar navbar-inverse navbar-fixed-top" style="background-color:@navBarBgColor">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            @Html.ActionLink("Virtual Football Manager", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                        </div>
+                        <div class="navbar-collapse collapse">
+                            <ul class="nav navbar-nav">
+                                <li>@Html.ActionLink("Home", "Index", "Home")</li>
+
+
+                                @if (User.IsInRole(Virtual_Football_Manager.Models.RoleNames.ADMIN))
+                                {
+                                    <li>@Html.ActionLink("Football Player", "Index", "FootballPlayer")</li>
+                                    <li>@Html.ActionLink("Team", "Index", "Team")</li>
+                                    <li>@Html.ActionLink("Match", "Index", "Match")</li>
+                                    <li>@Html.ActionLink("Fixture", "Index", "Fixture")</li>
+                                    <li>@Html.ActionLink("Add User To Role", "AddUserToRole", "Account")</li>
+                                    <li>@Html.ActionLink("MyVirtualTeam", "Index", "MyVirtualTeam")</li>
+                                }
+                                else if (User.IsInRole(Virtual_Football_Manager.Models.RoleNames.USER))
+                                {
+                                    <li>@Html.ActionLink("Football Player", "Index", "FootballPlayer")</li>
+                                    <li>@Html.ActionLink("Team", "Index", "Team")</li>
+                                    <li>@Html.ActionLink("Match", "Index", "Match")</li>
+                                    <li>@Html.ActionLink("Fixture", "Index", "Fixture")</li>
+
+                                    <li>@Html.ActionLink("MyVirtualTeam", "Index", "MyVirtualTeam")</li>
+                                }
+                                else
+                                {
+
+                                }
+
+
+
+
+                            </ul>
+                            @Html.Partial("_LoginPartial")
+                        </div>
+                    </div>
+                </div>
+                <div class="container body-content">
+                    @RenderBody()
+                    <hr />
+                    <footer>
+                        <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+                    </footer>
+                </div>
+
+                @Scripts.Render("~/bundles/jquery")
+                @Scripts.Render("~/bundles/bootstrap")
+                @RenderSection("scripts", required: false)
+            </body>
+</html>

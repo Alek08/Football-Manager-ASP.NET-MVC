@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Virtual_Football_Manager.Models.ModelViewTable>
+
+@{
+    ViewBag.Title = "Table";
+}
+
+<h2>ViewTable</h2>
+
+ 
+<table class="table">
+    <tr>
+        <th>#</th>
+        <th>
+            @Html.DisplayNameFor(model => model.team.name)
+        </th>
+        <th>
+           wins
+        </th>
+        <th>
+            draw  
+        </th>
+        <th>
+            lost
+        </th>
+        <th>
+            points
+        </th>
+       
+    </tr>
+
+ 
+    @{ var number = 0;}
+@foreach (var item in Model){
+    number = number + 1;
+    <tr>
+        <td>@number</td>
+        <td>
+            @Html.ActionLink("" + item.team.name, "Details","Team", new { id = item.team.id },new { }) 
+        </td>
+        <td>
+             @item.win  
+        </td>
+        <td>
+            @item.draw
+        </td>
+        <td>
+            @item.lost
+        </td>
+        <td>
+            @item.points
+        </td>
+       
+    </tr>
+}
+
+</table>

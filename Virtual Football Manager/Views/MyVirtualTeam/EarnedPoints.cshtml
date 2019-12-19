@@ -1,0 +1,106 @@
+﻿@model IEnumerable<Virtual_Football_Manager.Models.ModelViewEarnedPointsForPlayer>
+@{
+    ViewBag.Title = "EarnedPoints";
+}
+
+<h2>Earned Points</h2>
+
+
+<table class="table table-striped">
+
+    <tr>
+        <th>Player</th>
+        <th>Points</th>
+    </tr>
+
+    @foreach (var item in Model){
+        <tr>
+            <td>
+                @Html.ActionLink("" + @item.footballPlayer.name, "Details", "FootballPlayer", new { id = @item.footballPlayer.id }, new { })
+            </td>
+            <td>
+                <table class="table table-striped">
+                    <tr>
+                        <th>Fixture</th>
+                        <th>Total Points</th>
+                        <th>Goals Scored</th>
+                        <th>Goal Assists</th>
+                        <th>Team Wins</th>
+                        <th>Ball Posession</th>
+                        <th>Total Shoots</th>
+                        <th>Passes</th>
+                        <th>Fouls</th>
+                        <th>Corners</th>
+                        <th>Yellow Cards</th>
+                        <th>Red Cards</th>
+                    </tr>
+
+                    @{
+                        var totalPoints= 0;
+                        var numOfGoalsScored = 0;
+                        var numOfGoalAssists = 0;
+                        var numOfTeamWinsForPlayer = 0;
+                        var numOfPlayersWithMoreBallPosessionPerMatch = 0;
+                        var numOfPlayersWithMoreBallTotalShootsPerMatch = 0;
+                        var numOfPlayersWithMorePassesPerMatch = 0;
+                        var numOfPlayersWithMoreFoulsPerMatch = 0;
+                        var numOfPlayersWithMoreCornersPerMatch = 0;
+                        var numOfPlayersWithMoreYellowCardsPerMatch = 0;
+                        var numOfPlayersWithMoreRedCardsPerMatch = 0;
+                    }
+
+                 @foreach (var item2 in item.earnedPointsPerFixture){
+                    <tr>
+                        <td>
+                            @Html.ActionLink("" + @item2.fixture.name, "Details", "Fixture", new { id = @item2.fixture.id }, new { })
+                        </td>
+                        <td>@item2.totalPoints</td>
+                        <td>@item2.numOfGoalsScored</td>
+                        <td>@item2.numOfGoalAssists</td>
+                        <td>@item2.numOfTeamWinsForPlayer</td>
+                        <td>@item2.numOfPlayersWithMoreBallPosessionPerMatch</td>
+                        <td>@item2.numOfPlayersWithMoreBallTotalShootsPerMatch</td>
+                        <td>@item2.numOfPlayersWithMorePassesPerMatch</td>
+                        <td>@item2.numOfPlayersWithMoreFoulsPerMatch</td>
+                        <td>@item2.numOfPlayersWithMoreCornersPerMatch</td>
+                        <td>@item2.numOfPlayersWithMoreYellowCardsPerMatch</td>
+                        <td>@item2.numOfPlayersWithMoreRedCardsPerMatch</td>
+                    </tr>
+
+                    totalPoints+= @item2.totalPoints;
+                    numOfGoalsScored += @item2.numOfGoalsScored;
+                    numOfGoalAssists += @item2.numOfGoalAssists;
+                    numOfTeamWinsForPlayer += @item2.numOfTeamWinsForPlayer;
+                    numOfPlayersWithMoreBallPosessionPerMatch += @item2.numOfPlayersWithMoreBallPosessionPerMatch;
+                    numOfPlayersWithMoreBallTotalShootsPerMatch += @item2.numOfPlayersWithMoreBallTotalShootsPerMatch;
+                    numOfPlayersWithMorePassesPerMatch += @item2.numOfPlayersWithMorePassesPerMatch;
+                    numOfPlayersWithMoreFoulsPerMatch += @item2.numOfPlayersWithMoreFoulsPerMatch;
+                    numOfPlayersWithMoreCornersPerMatch += @item2.numOfPlayersWithMoreCornersPerMatch;
+                    numOfPlayersWithMoreYellowCardsPerMatch += @item2.numOfPlayersWithMoreYellowCardsPerMatch;
+                    numOfPlayersWithMoreRedCardsPerMatch += @item2.numOfPlayersWithMoreRedCardsPerMatch;
+
+                 }
+
+
+                    <tr>
+                        <td style="font-weight:bold">Total points</td>
+                        <td style="font-size:20px;"><label class="label label-default">@totalPoints</label></td>
+                        <td><label class="label label-success">@(numOfGoalsScored * 2)</label></td>
+                        <td><label class="label label-success">@numOfGoalAssists</label></td>
+                        <td><label class="label label-success">@numOfTeamWinsForPlayer</label></td>
+                        <td><label class="label label-success">@numOfPlayersWithMoreBallPosessionPerMatch</label></td>
+                        <td><label class="label label-success">@numOfPlayersWithMoreBallTotalShootsPerMatch</label></td>
+                        <td><label class="label label-success">@numOfPlayersWithMorePassesPerMatch</label></td>
+                        <td><label class="label label-danger">- @numOfPlayersWithMoreFoulsPerMatch</label></td>
+                        <td><label class="label label-success">@numOfPlayersWithMoreCornersPerMatch</label></td>
+                        <td><label class="label label-danger">- @numOfPlayersWithMoreYellowCardsPerMatch</label></td>
+                        <td><label class="label label-danger"> - @numOfPlayersWithMoreRedCardsPerMatch</label></td>
+
+                    </tr>
+
+                </table>
+            </td>
+        </tr>
+    
+    }
+</table>

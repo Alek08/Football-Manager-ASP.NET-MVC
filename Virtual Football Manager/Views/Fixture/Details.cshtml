@@ -1,0 +1,93 @@
+﻿@model Virtual_Football_Manager.Models.ModelFixtureAndAllFixtures
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>All Matches in @Model.fixture.name</h2>
+<hr />
+  
+
+ <style>
+      .changeColorOnMouseHover:hover td {background:#99c0ff}
+
+ </style>
+ 
+ <div class="row text-center">
+
+@{
+    if (Model.hasLeft)
+    {
+        int previousFixturePos = Model.fixtures.IndexOf(Model.fixture) - 1;
+        Virtual_Football_Manager.Models.Fixture previousFixture = Model.fixtures.ElementAt(previousFixturePos);
+
+        @Html.ActionLink(" ", "Details", "Fixture", new { id = previousFixture.id },
+                        new { @class = "glyphicon glyphicon-arrow-left",
+                            @style = "font-size:25px;margin-right:4px;"
+                        })
+    }
+
+    if (Model.hasRight)
+    {
+        int nextFixturePos = Model.fixtures.IndexOf(Model.fixture) + 1;
+        Virtual_Football_Manager.Models.Fixture nextFixture = Model.fixtures.ElementAt(nextFixturePos);
+
+        @Html.ActionLink(" ", "Details", "Fixture", new { id = nextFixture.id },
+                        new { @class = "glyphicon glyphicon-arrow-right",
+                            @style = "font-size:25px;margin-left:4px;"
+                        })
+    }
+}
+
+     </div>
+<table class="table">
+    @{
+        for (int i = 0; i < Model.fixture.matches.Count; i++)
+        {
+            <tr onclick="location.href = '@(Url.Action("Details", "Match", new { id = Model.fixture.matches.ElementAt(i).id }))'"
+                style="cursor: pointer;"
+                class="changeColorOnMouseHover">
+                <td style="font-size:20px">
+                    @{
+                        int homeTeamId = @Model.fixture.matches.ElementAt(i).homeTeamId;
+                        int awayTeamId = @Model.fixture.matches.ElementAt(i).awayTeamId;
+
+                       <!-- na poz 0 e homeTeam-->
+                        if (homeTeamId == @Model.fixture.matches.ElementAt(i).teams.ElementAt(0).id)
+                        {
+                            <span>@Model.fixture.matches.ElementAt(i).teams.ElementAt(0).name</span>
+                            <span class="label label-success">
+                                @Model.fixture.matches.ElementAt(i).homeScore
+                                :
+                                @Model.fixture.matches.ElementAt(i).awayScore
+                            </span>
+                            <span style="margin-left:5px">@Model.fixture.matches.ElementAt(i).teams.ElementAt(1).name</span>
+
+                        }
+                        else { <!--na poz 1 e homeTeam -->
+                            <span> @Model.fixture.matches.ElementAt(i).teams.ElementAt(1).name </span>
+                            <span class="label label-success">
+                                @Model.fixture.matches.ElementAt(i).homeScore   
+                                :
+                                @Model.fixture.matches.ElementAt(i).awayScore
+                            </span>
+                            <span style="margin-left:5px"> @Model.fixture.matches.ElementAt(i).teams.ElementAt(0).name </span>
+
+
+                        }
+                    }
+
+
+
+
+                </td>
+            </tr>
+
+                            }
+                        }
+</table>
+
+ 
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

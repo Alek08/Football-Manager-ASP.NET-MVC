@@ -1,0 +1,170 @@
+﻿@model IEnumerable<Virtual_Football_Manager.Models.FootballPlayer>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+ @*
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.team.name)
+            </th>
+            <th>Actions</th>
+        </tr>
+
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.ActionLink("" + item.name, "Details", new { id = item.id })
+            </td>
+            <td>
+                @Html.ActionLink("" + item.team.name, "Details", "Team", new { id = item.id }, new { })
+            </td>
+            <td>
+
+                @{
+
+                    if (User.IsInRole(Virtual_Football_Manager.Models.RoleNames.ADMIN))
+                    {
+                        <span style="margin-right:5px">@Html.ActionLink("Edit", "Edit", new { id = item.id })</span>
+                        <span>@Html.ActionLink("Delete", "Delete", new { id = item.id })</span>
+                    }
+                }
+            </td>
+        </tr>
+    }
+
+    </table>
+
+
+
+
+
+*@
+
+
+@{ 
+    var isAdmin="False";
+    if (User.IsInRole(Virtual_Football_Manager.Models.RoleNames.ADMIN))
+    {
+        isAdmin = "True";
+    }
+    else {
+        isAdmin = "False";
+    }
+
+
+}
+
+<table id="movieTable" class="table">
+
+    <thead>
+        <tr>
+            <th>
+                Player Name
+            </th>
+            <th>
+                Team Name
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+
+</table>
+
+<img id="gif_loader" src="~/gif/gif_loader.gif">
+
+@section scripts{
+    <script>
+
+
+
+$(document).ready(function () {
+
+    $(document).ajaxStart(function () {
+        $("#gif_loader").show();
+    });
+
+    $(document).ajaxStop(function () {
+        $("#gif_loader").hide();
+    });
+
+
+    $("#movieTable").DataTable({
+        ajax: {
+            type:"GET",
+            url: "/api/FootballPlayersAPI",
+            dataSrc: "",
+            datatype: "json"
+        },
+        columns: [
+            {
+                data: "playerName",
+                render: function (data, type, model) {
+                    return "<a href='/FootballPlayer/Details/" + model.playerId + "'>" + model.playerName + "</a>";
+                }
+            },
+            {
+                data: "teamName",
+                render: function (data, type, model) {
+                    return "<a href='/Team/Details/" + model.teamId + "'>" + model.teamName + "</a>";
+                }
+            },
+            {
+                data: "Actions",
+                render: function (data, type, model) {
+                    str = "";
+                    if ("@isAdmin" == "True") {
+                        str += "<a href='/FootballPlayer/Edit/" + model.playerId + "'>Edit</a> ";
+                        str += " <a id='deleteClicked' valName='"+model.playerName+"' valId='" + model.playerId + "' href='#'>Delete</a>";
+                     }
+                    
+                   
+
+                    return str ;
+                }
+            }
+        ]
+    });
+
+
+    $(document).on('click', '#deleteClicked', function () {
+        elem = $(this);
+
+        response = confirm("Player with name " + elem.attr('valName') + " will be deleted");
+        if (response) {
+            //call ajax with type DELETE
+            $.ajax({
+                type: "DELETE",
+                url: '/api/FootballPlayersAPI/' + elem.attr('valId'),
+               // data: JSON.stringify({ ID: id }),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function () {
+                    // alert("Data has been deleted.");
+                    elem.parent().parent().remove();
+                    alert("Player with name " + elem.attr('valName') + " is deleted");
+                    location.reload();//page refresh
+                },
+                error: function () {
+                    alert("Error while deleting data");
+                }
+            });
+
+
+        } else {
+            alert("Deletion of Player with name " + elem.attr('valName') + " was canceled");
+        }
+    });
+
+});
+    </script>
+}

@@ -1,0 +1,173 @@
+﻿@model Virtual_Football_Manager.Models.Team
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Team</h4>
+    <hr />
+    <div>
+        <p>
+            <span style="font-weight: bold;"> @Html.DisplayNameFor(model => model.name):</span>
+            <span>@Html.DisplayFor(model => model.name)  </span>
+        </p>
+    </div>
+</div>
+
+ 
+
+ <style>
+    .changeColorOnMouseHover:hover td {
+        background: #99c0ff;
+    }
+</style>
+
+<table class="table table-bordered">
+    <tr>
+        <th>
+            Players in @Html.DisplayFor(model => model.name)
+        </th>
+    </tr>
+    @{
+        for (int i = 0; i < Model.footballPlayers.Count; i++)
+        {
+            <tr onclick="location.href = '@(Url.Action("Details", "FootballPlayer", new { id = Model.footballPlayers.ElementAt(i).id }))'"
+                style="cursor: pointer;"
+                class="changeColorOnMouseHover">
+                <td>
+                    @Model.footballPlayers.ElementAt(i).name
+                </td>
+            </tr>
+        }
+
+        if (Model.footballPlayers.Count < 11) {
+            <tr>
+                <td>
+                    @Html.ActionLink(" ", "Create", "FootballPlayer", new { teamId = Model.id },
+                       new
+                       {
+                           @class = "glyphicon glyphicon-plus",
+                           @style = "font-size:25px;margin-right:4px;"
+                       })
+                </td>
+            </tr>
+        }
+    }
+
+    
+
+
+</table>
+
+
+
+
+
+<table class="table table-bordered">
+    <tr>
+        <th>
+            @Html.DisplayFor(model => model.name) matches played
+        </th>
+    </tr>
+    @{
+        for (int i = 0; i < Model.matches.Count; i++)
+        {
+            <tr onclick="location.href = '@(Url.Action("Details", "Match", new { id = Model.matches.ElementAt(i).id }))'"
+                style="cursor: pointer;"
+                class="changeColorOnMouseHover">
+                <td>
+
+                 @{ 
+                     string winLoseDraw = "success";
+                     int homeTeamId = Model.matches.ElementAt(i).homeTeamId;
+                     int awayTeamId = Model.matches.ElementAt(i).awayTeamId;
+
+                     <!-- Timov e homeTeam vo match i-->
+                     if (homeTeamId == Model.id)
+                     {
+                         if (Model.matches.ElementAt(i).homeScore > Model.matches.ElementAt(i).awayScore)
+                         {
+                             winLoseDraw = "success";
+                         }
+                         else if (Model.matches.ElementAt(i).homeScore < Model.matches.ElementAt(i).awayScore)
+                         {
+                             winLoseDraw = "danger";
+                         }
+                         else if (Model.matches.ElementAt(i).homeScore == Model.matches.ElementAt(i).awayScore)
+                         {
+                             winLoseDraw = "warning";
+                         }
+                     }
+
+                     else
+                     {  <!-- Timov e awayTeam vo match i-->
+
+                         if (Model.matches.ElementAt(i).homeScore > Model.matches.ElementAt(i).awayScore)
+                         {
+                             winLoseDraw = "danger";
+                         }
+                         else if (Model.matches.ElementAt(i).homeScore < Model.matches.ElementAt(i).awayScore)
+                         {
+                             winLoseDraw = "success";
+                         }
+                         else if (Model.matches.ElementAt(i).homeScore == Model.matches.ElementAt(i).awayScore)
+                         {
+                             winLoseDraw = "warning";
+                         }
+
+                     }
+
+
+                     <!-- ako na poz 0 e homeTeam  -->
+                        if (homeTeamId == @Model.matches.ElementAt(i).teams.ElementAt(0).id)
+                        {
+
+                            <span>@Model.matches.ElementAt(i).teams.ElementAt(0).name</span>
+                            <span class="label label-@winLoseDraw">
+                                @Model.matches.ElementAt(i).homeScore
+                                :
+                                @Model.matches.ElementAt(i).awayScore
+                            </span>
+                                <span style="margin-left:5px">@Model.matches.ElementAt(i).teams.ElementAt(1).name</span>
+
+                        }
+
+                        else {  <!-- ako na poz 1 e homeTeam  -->
+
+                            <span>@Model.matches.ElementAt(i).teams.ElementAt(1).name</span>
+                            <span class="label label-@winLoseDraw">
+                                @Model.matches.ElementAt(i).homeScore
+                                :
+                                @Model.matches.ElementAt(i).awayScore
+                            </span>
+                                            <span style="margin-left:5px">@Model.matches.ElementAt(i).teams.ElementAt(0).name</span>
+
+
+                        }
+                    }
+
+
+
+
+
+                </td>
+            </tr>
+                        }
+    }
+</table>
+
+
+
+
+
+
+
+
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

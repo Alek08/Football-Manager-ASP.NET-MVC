@@ -1,0 +1,84 @@
+﻿@model Virtual_Football_Manager.Models.FootballPlayer
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Football Player</h4>
+    <hr />
+    <div>
+        <p>
+            <span style="font-weight: bold;"> @Html.DisplayNameFor(model => model.name):</span>
+            <span>@Html.DisplayFor(model => model.name)  </span>
+        </p>
+        <p>
+            <span style="font-weight: bold;">  @Html.DisplayNameFor(model => model.team.name):</span>
+            @Html.ActionLink("" + @Model.team.name, "Details", "Team", new { id = Model.TeamId }, new { })
+        </p>
+    </div>
+</div>
+
+<table class="table table-striped">
+    <tr>
+        <th>
+            Scorer:
+        </th>
+        <th>
+            Assisted By:
+        </th>
+        <th>
+            Minute:
+        </th>
+        <th>
+            Match:
+        </th>
+        <th>
+            Fixture:
+        </th>
+
+    </tr>
+    @{
+        for (int i = 0; i < Model.goals.Count; i++)
+        {
+            <tr>
+                <td>@Model.goals.ElementAt(i).footballPlayers.ElementAt(0).name</td>
+
+                
+                <td>@Html.ActionLink("" + @Model.goals.ElementAt(i).footballPlayers.ElementAt(1).name, 
+                   "Details", "FootballPlayer", new { id = @Model.goals.ElementAt(i).footballPlayers.ElementAt(1).id }, new { }) 
+                 </td>
+                
+                
+                <td>@Model.goals.ElementAt(i).minuteScored</td>
+                <td>    
+                    @Html.ActionLink("" + @Model.goals.ElementAt(i).match.teams.ElementAt(0).name +" " + @Model.goals.ElementAt(i).match.homeScore
+                   + ":" + @Model.goals.ElementAt(i).match.awayScore +" "+ @Model.goals.ElementAt(i).match.teams.ElementAt(1).name
+                   ,
+                   "Details", "Match", new { id = @Model.goals.ElementAt(i).match.id }, new { })
+                </td>   
+
+                <td> 
+                @Html.ActionLink("" + @Model.goals.ElementAt(i).match.fixture.name,
+                   "Details", "Fixture", new { id = @Model.goals.ElementAt(i).match.fixture.id }, new { }) 
+                </td>
+            </tr>
+        }
+    }
+</table>
+
+
+<p>
+    @{
+        if (User.IsInRole(Virtual_Football_Manager.Models.RoleNames.ADMIN))
+        {
+            <span style="margin-right:5px;">@Html.ActionLink("Edit", "Edit", new { id = Model.id })</span>
+        }
+
+        <span>@Html.ActionLink("Back to List", "Index")</span>
+
+    }
+ 
+</p>

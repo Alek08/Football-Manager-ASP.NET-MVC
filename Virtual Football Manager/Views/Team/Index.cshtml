@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Virtual_Football_Manager.Models.Team>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>All Teams</h2>
+
+<p>
+    @{ 
+
+        if (User.IsInRole(Virtual_Football_Manager.Models.RoleNames.ADMIN))
+        {
+            @Html.ActionLink("Create New Team", "Create")
+        }
+    }
+     
+</p>
+<table class="table" style="font-size:20px">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.name)
+        </th>
+
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+          
+            @{
+
+                if (User.IsInRole(Virtual_Football_Manager.Models.RoleNames.ADMIN))
+                {
+                    @Html.ActionLink(item.name, "Details", new { id = item.id },new {@style = "margin-right:10px;" })
+
+                    @Html.ActionLink(" ", "Edit", "Team", new { id = item.id },
+                       new { @class = "glyphicon glyphicon-pencil", @style = "margin-right:10px;" })
+
+                    @Html.ActionLink(" ", "Delete", "Team", new { id = item.id },
+                       new { @class = "glyphicon glyphicon-remove" })
+                }
+                else {
+                    @Html.ActionLink(item.name, "Details", new { id = item.id })
+                }
+            }
+
+
+           
+
+        </td>
+       
+    </tr>
+}
+
+</table>
